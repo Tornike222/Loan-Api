@@ -1,5 +1,6 @@
 using LoansApi.Api.DTOs;
 using LoansApi.Domain.Database;
+using LoansApi.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using NLog;
 using ILogger = NLog.ILogger;
@@ -8,8 +9,8 @@ namespace LoansApi.Services;
 
 public interface IAccountantService
 {
-    Task<UserDto> BlockUserAsync(int id, string accountantName, string accountantId);
-    Task<UserDto> UnblockUserAsync(int id, string accountantName, string accountantId);
+    Task<UserDto> BlockUserAsync(int id, string accountantName, string accountantId, UserRole requesterRole);
+    Task<UserDto> UnblockUserAsync(int id, string accountantName, string accountantId, UserRole requesterRole);
 }
 
 public class AccountantService : IAccountantService
@@ -22,7 +23,7 @@ public class AccountantService : IAccountantService
         _ctx = ctx;
     }
 
-    public async Task<UserDto> BlockUserAsync(int id, string accountantName, string accountantId)
+    public async Task<UserDto> BlockUserAsync(int id, string accountantName, string accountantId, UserRole requesterRole)
     {
         _logger.Info("BlockUserAsync called for userId={0}", id);
 
@@ -37,6 +38,12 @@ public class AccountantService : IAccountantService
         {
             _logger.Warn("User {0} (Id={1}) is already blocked.", user.Username, user.Id);
             throw new InvalidOperationException("User is already blocked.");
+        }
+        
+        if (requesterRole != UserRole.Accountant)
+        {
+            _logger.Warn("Unauthorized status update attempt. Role={0}", requesterRole);
+            throw new InvalidOperationException("Only accountants can update loan status.");
         }
 
         user.IsBlocked = true;
@@ -61,7 +68,7 @@ public class AccountantService : IAccountantService
         };
     }
 
-    public async Task<UserDto> UnblockUserAsync(int id, string accountantName, string accountantId)
+    public async Task<UserDto> UnblockUserAsync(int id, string accountantName, string accountantId, UserRole requesterRole)
     {
         _logger.Info("UnblockUserAsync called for userId={0}", id);
 
@@ -76,6 +83,12 @@ public class AccountantService : IAccountantService
         {
             _logger.Warn("User {0} (Id={1}) is not blocked.", user.Username, user.Id);
             throw new InvalidOperationException("User is not blocked.");
+        }
+        
+        if (requesterRole != UserRole.Accountant)
+        {
+            _logger.Warn("Unauthorized status update attempt. Role={0}", requesterRole);
+            throw new InvalidOperationException("Only accountants can update loan status.");
         }
 
         user.IsBlocked = false;

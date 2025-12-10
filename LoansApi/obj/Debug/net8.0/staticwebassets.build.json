@@ -1,1 +1,11 @@
-{"Version":1,"Hash":"LD0w8pu+iyc986Vs96JsCBWz9gguaxGtWBpY4/mUDGo=","Source":"LoansApi","BasePath":"_content/LoansApi","Mode":"Default","ManifestType":"Build","ReferencedProjectsConfiguration":[],"DiscoveryPatterns":[],"Assets":[],"Endpoints":[]}
+{
+  "Version": 1,
+  "Hash": "XVx46WIj0fi7G3/4NZN41M628PAvK02ieuRbT0KILJI=",
+  "Source": "LoansApi",
+  "BasePath": "_content/LoansApi",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

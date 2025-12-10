@@ -21,7 +21,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAccountantService, AccountantService>();
-
+builder.Services.AddScoped<ILoanService, LoanService>();
 
 
 builder.Services.AddDbContext<LoanDbContext>(options =>

@@ -29,15 +29,15 @@ namespace LoansApi.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Currency")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
+                    b.Property<int>("Currency")
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("PeriodMonths")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("Type")
                         .HasColumnType("INTEGER");
@@ -45,14 +45,9 @@ namespace LoansApi.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("UserId1")
-                        .HasColumnType("INTEGER");
-
                     b.HasKey("Id");
 
                     b.HasIndex("UserId");
-
-                    b.HasIndex("UserId1");
 
                     b.ToTable("Loans");
                 });
@@ -104,14 +99,10 @@ namespace LoansApi.Migrations
             modelBuilder.Entity("LoansApi.Domain.Entities.Loan", b =>
                 {
                     b.HasOne("LoansApi.Domain.Entities.User", null)
-                        .WithMany()
+                        .WithMany("Loans")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("LoansApi.Domain.Entities.User", null)
-                        .WithMany("Loans")
-                        .HasForeignKey("UserId1");
                 });
 
             modelBuilder.Entity("LoansApi.Domain.Entities.User", b =>

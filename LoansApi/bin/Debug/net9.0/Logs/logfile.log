@@ -204,3 +204,183 @@ LIMIT 1
 2025-12-10 23:47:18.7778|WARN|Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware|Failed to determine the https port for redirect.
 2025-12-10 23:47:18.8952|INFO|LoansApi.Services.AccountantService|BlockUserAsync called for userId=1
 2025-12-10 23:47:19.4664|WARN|LoansApi.Services.AccountantService|User tornike.e (Id=1) is already blocked.
+2025-12-11 00:43:12.2546|INFO|LoansApi.Program|Application started.
+2025-12-11 00:44:49.3744|WARN|Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware|Failed to determine the https port for redirect.
+2025-12-11 00:46:28.7782|INFO|LoansApi.Services.UserService|Login attempt: accountant.tornike
+2025-12-11 00:46:29.3478|INFO|LoansApi.Services.UserService|Login success: accountant.tornike
+2025-12-11 00:46:32.4848|ERROR|Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware|An unhandled exception has occurred while executing the request.System.InvalidOperationException: Unable to resolve service for type 'LoansApi.Services.ILoanService' while attempting to activate 'LoansApi.Api.Controllers.LoanController'.
+   at Microsoft.Extensions.DependencyInjection.ActivatorUtilities.ThrowHelperUnableToResolveService(Type type, Type requiredBy)
+   at lambda_method82(Closure, IServiceProvider, Object[])
+   at Microsoft.AspNetCore.Mvc.Controllers.ControllerFactoryProvider.<>c__DisplayClass6_0.<CreateControllerFactory>g__CreateController|0(ControllerContext controllerContext)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+2025-12-11 00:47:07.6867|INFO|LoansApi.Program|Application started.
+2025-12-11 00:47:16.6996|WARN|Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware|Failed to determine the https port for redirect.
+2025-12-11 00:47:17.4453|WARN|LoansApi.Services.LoanService|UserId=3 tries to create loan with type string, which is not allowed.
+2025-12-11 00:47:33.2697|INFO|LoansApi.Services.LoanService|Loan created successfully. LoanId=1, UserId=3, Amount=0
+2025-12-11 00:55:41.1382|INFO|LoansApi.Program|Application started.
+2025-12-11 00:56:58.0544|INFO|LoansApi.Program|Application started.
+2025-12-11 00:57:32.2243|WARN|Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware|Failed to determine the https port for redirect.
+2025-12-11 00:57:32.9616|WARN|LoansApi.Services.LoanService|CreateLoan failed: User not found. UserId=3
+2025-12-11 00:58:06.5511|INFO|LoansApi.Services.UserService|Login attempt: accountant.tornike
+2025-12-11 00:58:16.9832|INFO|LoansApi.Services.UserService|Register attempt: accountant.tornike
+2025-12-11 00:58:17.1219|INFO|LoansApi.Services.UserService|User registered successfully: accountant.tornike
+2025-12-11 00:58:19.3128|INFO|LoansApi.Services.UserService|Login attempt: accountant.tornike
+2025-12-11 00:58:19.3283|INFO|LoansApi.Services.UserService|Login success: accountant.tornike
+2025-12-11 00:58:22.5525|WARN|LoansApi.Services.LoanService|UserId=1 tries to create loan with currency string, which is not allowed.
+2025-12-11 00:58:42.7173|INFO|LoansApi.Services.LoanService|Loan created successfully. LoanId=1, UserId=1, Amount=0
+2025-12-11 01:00:55.7303|INFO|LoansApi.Services.LoanService|Loan created successfully. LoanId=2, UserId=1, Amount=0
+2025-12-11 01:01:02.9098|INFO|LoansApi.Services.LoanService|Loan created successfully. LoanId=3, UserId=1, Amount=4123
+2025-12-11 01:01:11.0345|INFO|LoansApi.Services.LoanService|Loan created successfully. LoanId=4, UserId=1, Amount=4123
+2025-12-11 01:06:48.2348|INFO|LoansApi.Program|Application started.
+2025-12-11 01:07:06.6956|WARN|Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware|Failed to determine the https port for redirect.
+2025-12-11 01:07:07.4029|WARN|LoansApi.Services.LoanService|CreateLoan failed: User not found. UserId=1
+2025-12-11 01:07:16.9431|INFO|LoansApi.Services.UserService|GetUserById called: 1
+2025-12-11 01:07:16.9844|INFO|LoansApi.Services.UserService|GetUserById success: 1
+2025-12-11 01:07:26.4318|INFO|LoansApi.Services.UserService|Login attempt: accountant.tornike
+2025-12-11 01:07:31.9574|INFO|LoansApi.Services.UserService|Register attempt: accountant.tornike
+2025-12-11 01:07:32.0803|INFO|LoansApi.Services.UserService|User registered successfully: accountant.tornike
+2025-12-11 01:07:40.3185|INFO|LoansApi.Services.UserService|Login attempt: accountant.tornike
+2025-12-11 01:07:40.3380|INFO|LoansApi.Services.UserService|Login success: accountant.tornike
+2025-12-11 01:07:46.2332|INFO|LoansApi.Services.UserService|GetUserById called: 1
+2025-12-11 01:07:46.2412|INFO|LoansApi.Services.UserService|GetUserById success: 1
+2025-12-11 01:07:50.9391|INFO|LoansApi.Services.LoanService|Loan created successfully. LoanId=1, UserId=1, Amount=4123
+2025-12-11 01:09:21.0495|INFO|LoansApi.Program|Application started.
+2025-12-11 01:09:28.7764|WARN|Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware|Failed to determine the https port for redirect.
+2025-12-11 01:09:29.6026|INFO|LoansApi.Services.LoanService|Loan created successfully. LoanId=2, UserId=1, Amount=4123
+2025-12-11 01:09:42.5045|WARN|LoansApi.Services.LoanService|UserId=1 tries to create loan with type car, which is not allowed.
+2025-12-11 01:13:25.4004|INFO|LoansApi.Program|Application started.
+2025-12-11 01:13:38.2550|WARN|Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware|Failed to determine the https port for redirect.
+2025-12-11 01:16:41.6688|INFO|LoansApi.Program|Application started.
+2025-12-11 01:16:50.0876|WARN|Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware|Failed to determine the https port for redirect.
+2025-12-11 01:16:56.5860|INFO|LoansApi.Services.LoanService|Loan created successfully. LoanId=3, UserId=1, Amount=4123
+2025-12-11 01:19:02.7504|INFO|LoansApi.Program|Application started.
+2025-12-11 01:19:07.5171|WARN|Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware|Failed to determine the https port for redirect.
+2025-12-11 01:19:08.3406|INFO|LoansApi.Services.LoanService|Loan created successfully. LoanId=4, UserId=1, Amount=4123
+2025-12-11 01:20:34.0857|INFO|LoansApi.Program|Application started.
+2025-12-11 01:20:37.1279|WARN|Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware|Failed to determine the https port for redirect.
+2025-12-11 01:20:37.9582|INFO|LoansApi.Services.LoanService|Loan created successfully. LoanId=5, UserId=1, Amount=4123
+2025-12-11 01:21:54.8206|INFO|LoansApi.Program|Application started.
+2025-12-11 01:21:55.7795|WARN|Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware|Failed to determine the https port for redirect.
+2025-12-11 01:21:56.6037|INFO|LoansApi.Services.LoanService|Loan created successfully. LoanId=6, UserId=1, Amount=4123
+2025-12-11 01:40:04.9607|INFO|LoansApi.Services.AccountantService|BlockUserAsync called for userId=1
+2025-12-11 01:40:04.9889|INFO|LoansApi.Services.AccountantService|User accountant.tornike (Id=1) blocked by Accountant accountant.tornike (Id=1)
+2025-12-11 01:40:13.4151|WARN|LoansApi.Services.LoanService|CreateLoan forbidden: Blocked user tried to create loan. UserId=1
+2025-12-11 01:40:24.8290|INFO|LoansApi.Services.AccountantService|UnblockUserAsync called for userId=1
+2025-12-11 01:40:24.8340|INFO|LoansApi.Services.AccountantService|User accountant.tornike (Id=1) unblocked by Accountant accountant.tornike (Id=1)
+2025-12-11 01:40:28.1564|INFO|LoansApi.Services.LoanService|Loan created successfully. LoanId=7, UserId=1, Amount=4123
+2025-12-11 01:40:31.1080|INFO|LoansApi.Services.AccountantService|BlockUserAsync called for userId=1
+2025-12-11 01:40:31.1114|INFO|LoansApi.Services.AccountantService|User accountant.tornike (Id=1) blocked by Accountant accountant.tornike (Id=1)
+2025-12-11 01:40:33.3474|WARN|LoansApi.Services.LoanService|CreateLoan forbidden: Blocked user tried to create loan. UserId=1
+2025-12-11 01:46:26.6986|INFO|LoansApi.Program|Application started.
+2025-12-11 01:46:31.3970|WARN|Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware|Failed to determine the https port for redirect.
+2025-12-11 01:46:32.1342|WARN|LoansApi.Services.LoanService|Blocked user tried to create loan. UserId=1
+2025-12-11 01:46:45.2953|INFO|LoansApi.Services.AccountantService|UnblockUserAsync called for userId=1
+2025-12-11 01:46:45.3779|INFO|LoansApi.Services.AccountantService|User accountant.tornike (Id=1) unblocked by Accountant accountant.tornike (Id=1)
+2025-12-11 01:46:48.2078|INFO|LoansApi.Services.LoanService|Loan created successfully. LoanId=8, UserId=1, Amount=4123
+2025-12-11 01:47:18.9506|INFO|LoansApi.Program|Application started.
+2025-12-11 01:47:25.8666|WARN|Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware|Failed to determine the https port for redirect.
+2025-12-11 01:47:26.0025|INFO|LoansApi.Services.UserService|GetUserById called: 1
+2025-12-11 01:47:26.5576|INFO|LoansApi.Services.UserService|GetUserById success: 1
+2025-12-11 01:47:28.2955|INFO|LoansApi.Services.UserService|GetUserById called: 1
+2025-12-11 01:47:28.3174|INFO|LoansApi.Services.UserService|GetUserById success: 1
+2025-12-11 01:47:32.8657|INFO|LoansApi.Services.AccountantService|BlockUserAsync called for userId=1
+2025-12-11 01:47:33.0016|INFO|LoansApi.Services.AccountantService|User accountant.tornike (Id=1) blocked by Accountant accountant.tornike (Id=1)
+2025-12-11 01:48:11.6215|INFO|LoansApi.Services.UserService|Login attempt: accountant.tornike
+2025-12-11 01:48:11.6273|INFO|LoansApi.Services.UserService|Login success: accountant.tornike
+2025-12-11 01:48:14.5270|INFO|LoansApi.Services.AccountantService|BlockUserAsync called for userId=1
+2025-12-11 01:48:14.5296|WARN|LoansApi.Services.AccountantService|User accountant.tornike (Id=1) is already blocked.
+2025-12-11 01:49:39.5934|INFO|LoansApi.Program|Application started.
+2025-12-11 01:49:47.3938|WARN|Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware|Failed to determine the https port for redirect.
+2025-12-11 01:49:48.1653|WARN|LoansApi.Services.LoanService|Blocked user tried to create loan. UserId=1
+2025-12-11 01:50:55.1608|INFO|LoansApi.Program|Application started.
+2025-12-11 01:50:57.8691|WARN|Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware|Failed to determine the https port for redirect.
+2025-12-11 01:50:58.6011|WARN|LoansApi.Services.LoanService|Blocked user tried to create loan. UserId=1
+2025-12-11 01:52:25.4947|INFO|LoansApi.Program|Application started.
+2025-12-11 01:52:42.4477|WARN|Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware|Failed to determine the https port for redirect.
+2025-12-11 01:52:43.2006|WARN|LoansApi.Services.LoanService|Blocked user tried to create loan. UserId=1
+2025-12-11 01:52:55.2969|WARN|LoansApi.Services.LoanService|Blocked user tried to create loan. UserId=1
+2025-12-11 01:53:18.4186|INFO|LoansApi.Services.AccountantService|UnblockUserAsync called for userId=1
+2025-12-11 01:53:18.5319|INFO|LoansApi.Services.AccountantService|User accountant.tornike (Id=1) unblocked by Accountant accountant.tornike (Id=1)
+2025-12-11 01:53:22.3706|INFO|LoansApi.Services.LoanService|Loan created successfully. LoanId=9, UserId=1, Amount=4123
+2025-12-11 01:53:25.6809|INFO|LoansApi.Services.AccountantService|UnblockUserAsync called for userId=1
+2025-12-11 01:53:25.6861|WARN|LoansApi.Services.AccountantService|User accountant.tornike (Id=1) is not blocked.
+2025-12-11 01:56:55.2517|INFO|LoansApi.Services.AccountantService|UnblockUserAsync called for userId=1
+2025-12-11 01:56:55.2570|WARN|LoansApi.Services.AccountantService|User accountant.tornike (Id=1) is not blocked.
+2025-12-11 01:57:15.7980|INFO|LoansApi.Services.AccountantService|BlockUserAsync called for userId=1
+2025-12-11 01:57:15.8045|INFO|LoansApi.Services.AccountantService|User accountant.tornike (Id=1) blocked by Accountant accountant.tornike (Id=1)
+2025-12-11 01:57:20.7163|WARN|LoansApi.Services.LoanService|Blocked user tried to create loan. UserId=1
+2025-12-11 02:05:45.7259|INFO|LoansApi.Program|Application started.
+2025-12-11 02:05:52.7048|WARN|Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware|Failed to determine the https port for redirect.
+2025-12-11 02:05:53.4868|WARN|LoansApi.Services.LoanService|Blocked user tried to create loan. UserId=1
+2025-12-11 02:05:56.9512|INFO|LoansApi.Services.AccountantService|UnblockUserAsync called for userId=1
+2025-12-11 02:05:57.0363|INFO|LoansApi.Services.AccountantService|User accountant.tornike (Id=1) unblocked by Accountant accountant.tornike (Id=1)
+2025-12-11 02:06:00.2344|INFO|LoansApi.Services.LoanService|Loan created successfully. LoanId=10, UserId=1, Amount=4123
+2025-12-11 02:11:25.7443|INFO|LoansApi.Program|Application started.
+2025-12-11 02:11:44.4650|WARN|Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware|Failed to determine the https port for redirect.
+2025-12-11 02:12:14.2219|INFO|LoansApi.Services.AccountantService|BlockUserAsync called for userId=1
+2025-12-11 02:12:14.8359|INFO|LoansApi.Services.AccountantService|User accountant.tornike (Id=1) blocked by Accountant accountant.tornike (Id=1)
+2025-12-11 02:12:20.1589|INFO|LoansApi.Services.AccountantService|UnblockUserAsync called for userId=1
+2025-12-11 02:12:20.1753|INFO|LoansApi.Services.AccountantService|User accountant.tornike (Id=1) unblocked by Accountant accountant.tornike (Id=1)
+2025-12-11 02:12:21.3364|INFO|LoansApi.Services.AccountantService|UnblockUserAsync called for userId=1
+2025-12-11 02:12:21.3808|WARN|LoansApi.Services.AccountantService|User accountant.tornike (Id=1) is not blocked.
+2025-12-11 02:12:38.5171|INFO|LoansApi.Services.UserService|Login attempt: accountant.tornike
+2025-12-11 02:12:38.5232|INFO|LoansApi.Services.UserService|Login success: accountant.tornike
+2025-12-11 02:13:05.4952|INFO|LoansApi.Services.LoanService|Loan status updated. LoanId=1, NewStatus=approved
+2025-12-11 02:17:00.8501|INFO|LoansApi.Services.LoanService|Loan created successfully. LoanId=11, UserId=1, Amount=4123
+2025-12-11 02:17:25.9767|INFO|LoansApi.Services.LoanService|Loan status updated. LoanId=1, NewStatus=approved
+2025-12-11 02:17:45.9942|INFO|LoansApi.Services.LoanService|Loan created successfully. LoanId=12, UserId=1, Amount=4123
+2025-12-11 02:17:51.6454|INFO|LoansApi.Services.LoanService|Loan status updated. LoanId=1, NewStatus=rejected
+2025-12-11 02:20:02.8982|INFO|LoansApi.Services.LoanService|Loan status updated. LoanId=1, NewStatus=rejected
+2025-12-11 02:20:31.6809|INFO|LoansApi.Services.LoanService|Loan status updated. LoanId=1, NewStatus=approved
+2025-12-11 02:23:01.1513|INFO|LoansApi.Program|Application started.
+2025-12-11 02:23:06.1557|WARN|Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware|Failed to determine the https port for redirect.
+2025-12-11 02:23:06.8744|INFO|LoansApi.Services.LoanService|Loan status updated. LoanId=1, NewStatus=approved
+2025-12-11 02:24:37.3396|INFO|LoansApi.Program|Application started.
+2025-12-11 02:24:39.1873|WARN|Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware|Failed to determine the https port for redirect.
+2025-12-11 02:24:39.9488|INFO|LoansApi.Services.LoanService|Loan status updated. LoanId=12, NewStatus=approved
+2025-12-11 02:25:00.2566|INFO|LoansApi.Services.LoanService|Loan status updated. LoanId=11, NewStatus=rejected
+2025-12-11 02:25:08.6146|WARN|LoansApi.Services.LoanService|Invalid status update. LoanId=11, Status=rejectesd
+2025-12-11 02:25:59.9453|INFO|LoansApi.Services.UserService|Register attempt: accountan2t.tornike
+2025-12-11 02:26:00.0081|INFO|LoansApi.Services.UserService|User registered successfully: accountan2t.tornike
+2025-12-11 02:26:10.7653|INFO|LoansApi.Services.LoanService|Loan created successfully. LoanId=13, UserId=1, Amount=4123
+2025-12-11 02:26:16.6665|INFO|LoansApi.Services.LoanService|Loan status updated. LoanId=13, NewStatus=rejected
+2025-12-11 02:32:17.0949|INFO|LoansApi.Program|Application started.
+2025-12-11 02:32:28.5940|WARN|Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware|Failed to determine the https port for redirect.
+2025-12-11 02:32:29.3675|INFO|LoansApi.Services.LoanService|Loan status updated. LoanId=13, NewStatus=rejected
+2025-12-11 02:32:56.1279|INFO|LoansApi.Services.UserService|Login attempt: accountan2t.tornike
+2025-12-11 02:32:56.1934|INFO|LoansApi.Services.UserService|Login success: accountan2t.tornike
+2025-12-11 02:33:02.5375|INFO|LoansApi.Services.LoanService|Loan created successfully. LoanId=14, UserId=2, Amount=4123
+2025-12-11 02:35:02.1988|INFO|LoansApi.Services.UserService|GetUserById called: 2
+2025-12-11 02:35:02.2463|INFO|LoansApi.Services.UserService|GetUserById success: 2
+2025-12-11 02:35:07.6494|INFO|LoansApi.Services.LoanService|Loan created successfully. LoanId=15, UserId=2, Amount=4123
+2025-12-11 02:36:30.9602|INFO|LoansApi.Program|Application started.
+2025-12-11 02:36:32.1322|WARN|Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware|Failed to determine the https port for redirect.
+2025-12-11 02:36:32.9283|WARN|LoansApi.Services.LoanService|Unauthorized status update attempt. Role=User
+2025-12-11 02:37:02.0288|INFO|LoansApi.Program|Application started.
+2025-12-11 02:37:03.3338|WARN|Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware|Failed to determine the https port for redirect.
+2025-12-11 02:37:03.4527|INFO|LoansApi.Services.AccountantService|BlockUserAsync called for userId=1
+2025-12-11 02:37:04.1261|INFO|LoansApi.Services.AccountantService|User accountant.tornike (Id=1) blocked by Accountant accountan2t.tornike (Id=2)
+2025-12-11 02:37:11.5244|INFO|LoansApi.Services.AccountantService|UnblockUserAsync called for userId=1
+2025-12-11 02:37:11.5451|INFO|LoansApi.Services.AccountantService|User accountant.tornike (Id=1) unblocked by Accountant accountan2t.tornike (Id=2)
+2025-12-11 02:44:26.8713|INFO|LoansApi.Program|Application started.
+2025-12-11 02:44:35.9230|WARN|Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware|Failed to determine the https port for redirect.
+2025-12-11 02:44:36.0641|INFO|LoansApi.Services.AccountantService|UnblockUserAsync called for userId=1
+2025-12-11 02:44:36.6686|WARN|LoansApi.Services.AccountantService|User accountant.tornike (Id=1) is not blocked.
+2025-12-11 02:44:42.8981|INFO|LoansApi.Services.AccountantService|BlockUserAsync called for userId=1
+2025-12-11 02:44:42.9139|WARN|LoansApi.Services.AccountantService|Unauthorized status update attempt. Role=User
+2025-12-11 02:44:48.9855|INFO|LoansApi.Services.AccountantService|UnblockUserAsync called for userId=1
+2025-12-11 02:44:49.0269|WARN|LoansApi.Services.AccountantService|User accountant.tornike (Id=1) is not blocked.
+2025-12-11 02:45:44.2169|INFO|LoansApi.Services.AccountantService|UnblockUserAsync called for userId=1
+2025-12-11 02:45:44.2224|WARN|LoansApi.Services.AccountantService|Unauthorized status update attempt. Role=User
+2025-12-11 02:45:48.3486|INFO|LoansApi.Services.AccountantService|BlockUserAsync called for userId=1
+2025-12-11 02:45:48.3508|WARN|LoansApi.Services.AccountantService|User accountant.tornike (Id=1) is already blocked.

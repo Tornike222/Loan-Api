@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using LoansApi.Services;
 using System.Security.Claims;
+using LoansApi.Domain.Entities;
 
 namespace LoansApi.Api.Controllers;
 
@@ -17,15 +18,15 @@ public class AccountantController : ControllerBase
     }
 
     [HttpPatch("blockUser/{id}")]
-    [Authorize(Roles = "Accountant")]
     public async Task<IActionResult> BlockUser(int id)
     {
         var accountantName = User.FindFirstValue(ClaimTypes.Name);
         var accountantId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
+        var roleClaim = User.FindFirstValue(ClaimTypes.Role);
+        var requesterRole = Enum.Parse<UserRole>(roleClaim);
         try
         {
-            var result = await _service.BlockUserAsync(id, accountantName, accountantId);
+            var result = await _service.BlockUserAsync(id, accountantName, accountantId, requesterRole);
             return Ok(result);
         }
         catch (KeyNotFoundException ex)
@@ -39,15 +40,16 @@ public class AccountantController : ControllerBase
     }
 
     [HttpPatch("unblockUser/{id}")]
-    [Authorize(Roles = "Accountant")]
     public async Task<IActionResult> UnblockUser(int id)
     {
         var accountantName = User.FindFirstValue(ClaimTypes.Name);
         var accountantId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
+        var roleClaim = User.FindFirstValue(ClaimTypes.Role);
+        var requesterRole = Enum.Parse<UserRole>(roleClaim);
+        
         try
         {
-            var result = await _service.UnblockUserAsync(id, accountantName, accountantId);
+            var result = await _service.UnblockUserAsync(id, accountantName, accountantId, requesterRole);
             return Ok(result);
         }
         catch (KeyNotFoundException ex)

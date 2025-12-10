@@ -31,8 +31,21 @@ public class LoanDbContext : DbContext
             .HasForeignKey(l => l.UserId)
             .OnDelete(DeleteBehavior.Cascade);
         
+        modelBuilder.Entity<Loan>()
+            .Property(l => l.Status)
+            .HasConversion<string>();
+        
+        modelBuilder.Entity<Loan>()
+            .Property(l => l.Type)
+            .HasConversion<string>();
+        
+        modelBuilder.Entity<Loan>()
+            .Property(l => l.Currency)
+            .HasConversion<string>();
+        
         modelBuilder.Entity<User>()
             .Property(u => u.Role)
             .HasConversion<string>();
+        
     }
 }

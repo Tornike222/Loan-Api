@@ -1,6 +1,5 @@
 using System.Security.Claims;
 using LoansApi.Api.DTOs;
-using LoansApi.Api.ResponseDTOs;
 using LoansApi.Domain.Entities;
 using LoansApi.Services;
 using Microsoft.AspNetCore.Authorization;
