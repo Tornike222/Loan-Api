@@ -28,19 +28,15 @@ public class UserController : ControllerBase
     [HttpPost("register")]
     public async Task<IActionResult> Register(UserRegistrationDto dto)
     {
-        var usernameExists = await _ctx.Users.AnyAsync(u => u.Username == dto.Username);
-        if (usernameExists)
+        if (await _ctx.Users.AnyAsync(u => u.Username == dto.Username))
             return BadRequest("Username already taken.");
         
-        var userEmailExists = await _ctx.Users.AnyAsync(u => u.Email == dto.Email);
-        if (userEmailExists)
+        if (await _ctx.Users.AnyAsync(u => u.Email == dto.Email))
             return BadRequest("Email already taken.");
         
-        var allowedRoles = new[] { UserRole.User, UserRole.Accountant };
         UserRole role = UserRole.User;
         if (!string.IsNullOrWhiteSpace(dto.Role) &&
-            Enum.TryParse<UserRole>(dto.Role, true, out var parsedRole) &&
-            allowedRoles.Contains(parsedRole))
+            Enum.TryParse<UserRole>(dto.Role, true, out var parsedRole))
         {
             role = parsedRole;
         }
@@ -60,14 +56,12 @@ public class UserController : ControllerBase
         _ctx.Users.Add(user);
         await _ctx.SaveChangesAsync();
 
-        var response = new UserRegistrationResponseDto
+        return Ok(new UserRegistrationResponseDto
         {
             Id = user.Id,
             Username = user.Username,
             Role = user.Role.ToString()
-        };
-
-        return Ok(response);
+        });
     }
     
     [HttpPost("login")]

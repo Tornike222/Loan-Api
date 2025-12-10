@@ -1,9 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "F6SMyJdD47A=",
+  "dgSpecHash": "aTWPxM02zAs=",
   "success": true,
   "projectFilePath": "/Users/elkanishvilit/RiderProjects/LoansApi/LoansApi/LoansApi.csproj",
   "expectedPackageFiles": [
+    "/Users/elkanishvilit/.nuget/packages/fluentvalidation/10.0.4/fluentvalidation.10.0.4.nupkg.sha512",
+    "/Users/elkanishvilit/.nuget/packages/fluentvalidation.aspnetcore/10.0.0/fluentvalidation.aspnetcore.10.0.0.nupkg.sha512",
+    "/Users/elkanishvilit/.nuget/packages/fluentvalidation.dependencyinjectionextensions/10.0.0/fluentvalidation.dependencyinjectionextensions.10.0.0.nupkg.sha512",
     "/Users/elkanishvilit/.nuget/packages/humanizer.core/2.14.1/humanizer.core.2.14.1.nupkg.sha512",
     "/Users/elkanishvilit/.nuget/packages/microsoft.aspnetcore.authentication.jwtbearer/8.0.0/microsoft.aspnetcore.authentication.jwtbearer.8.0.0.nupkg.sha512",
     "/Users/elkanishvilit/.nuget/packages/microsoft.aspnetcore.openapi/8.0.0/microsoft.aspnetcore.openapi.8.0.0.nupkg.sha512",
@@ -40,6 +43,9 @@
     "/Users/elkanishvilit/.nuget/packages/microsoft.identitymodel.tokens/7.0.3/microsoft.identitymodel.tokens.7.0.3.nupkg.sha512",
     "/Users/elkanishvilit/.nuget/packages/microsoft.openapi/1.6.14/microsoft.openapi.1.6.14.nupkg.sha512",
     "/Users/elkanishvilit/.nuget/packages/mono.texttemplating/2.2.1/mono.texttemplating.2.2.1.nupkg.sha512",
+    "/Users/elkanishvilit/.nuget/packages/nlog/6.0.7/nlog.6.0.7.nupkg.sha512",
+    "/Users/elkanishvilit/.nuget/packages/nlog.extensions.logging/6.1.0/nlog.extensions.logging.6.1.0.nupkg.sha512",
+    "/Users/elkanishvilit/.nuget/packages/nlog.web.aspnetcore/6.1.0/nlog.web.aspnetcore.6.1.0.nupkg.sha512",
     "/Users/elkanishvilit/.nuget/packages/sqlitepclraw.bundle_e_sqlite3/2.1.6/sqlitepclraw.bundle_e_sqlite3.2.1.6.nupkg.sha512",
     "/Users/elkanishvilit/.nuget/packages/sqlitepclraw.core/2.1.6/sqlitepclraw.core.2.1.6.nupkg.sha512",
     "/Users/elkanishvilit/.nuget/packages/sqlitepclraw.lib.e_sqlite3/2.1.6/sqlitepclraw.lib.e_sqlite3.2.1.6.nupkg.sha512",

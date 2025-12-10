@@ -8,14 +8,50 @@
     ".NETCoreApp,Version=v9.0": {
       "LoansApi/1.0.0": {
         "dependencies": {
+          "FluentValidation": "10.0.4",
+          "FluentValidation.AspNetCore": "10.0.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "8.0.0",
           "Microsoft.AspNetCore.OpenApi": "8.0.0",
           "Microsoft.EntityFrameworkCore.Design": "8.0.0",
           "Microsoft.EntityFrameworkCore.Sqlite": "8.0.0",
+          "NLog": "6.0.7",
+          "NLog.Web.AspNetCore": "6.1.0",
           "Swashbuckle.AspNetCore": "6.7.0"
         },
         "runtime": {
           "LoansApi.dll": {}
+        }
+      },
+      "FluentValidation/10.0.4": {
+        "runtime": {
+          "lib/net5.0/FluentValidation.dll": {
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "10.0.4.0"
+          }
+        }
+      },
+      "FluentValidation.AspNetCore/10.0.0": {
+        "dependencies": {
+          "FluentValidation": "10.0.4",
+          "FluentValidation.DependencyInjectionExtensions": "10.0.0"
+        },
+        "runtime": {
+          "lib/net5.0/FluentValidation.AspNetCore.dll": {
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "10.0.0.0"
+          }
+        }
+      },
+      "FluentValidation.DependencyInjectionExtensions/10.0.0": {
+        "dependencies": {
+          "FluentValidation": "10.0.4",
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "8.0.0"
+        },
+        "runtime": {
+          "lib/netstandard2.1/FluentValidation.DependencyInjectionExtensions.dll": {
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "10.0.0.0"
+          }
         }
       },
       "Humanizer.Core/2.14.1": {
@@ -498,6 +534,38 @@
           }
         }
       },
+      "NLog/6.0.7": {
+        "runtime": {
+          "lib/netstandard2.1/NLog.dll": {
+            "assemblyVersion": "6.0.0.0",
+            "fileVersion": "6.0.7.4784"
+          }
+        }
+      },
+      "NLog.Extensions.Logging/6.1.0": {
+        "dependencies": {
+          "Microsoft.Extensions.Configuration.Abstractions": "8.0.0",
+          "Microsoft.Extensions.Logging": "8.0.0",
+          "NLog": "6.0.7"
+        },
+        "runtime": {
+          "lib/net8.0/NLog.Extensions.Logging.dll": {
+            "assemblyVersion": "6.0.0.0",
+            "fileVersion": "6.1.0.770"
+          }
+        }
+      },
+      "NLog.Web.AspNetCore/6.1.0": {
+        "dependencies": {
+          "NLog.Extensions.Logging": "6.1.0"
+        },
+        "runtime": {
+          "lib/net8.0/NLog.Web.AspNetCore.dll": {
+            "assemblyVersion": "6.0.0.0",
+            "fileVersion": "6.1.0.1363"
+          }
+        }
+      },
       "SQLitePCLRaw.bundle_e_sqlite3/2.1.6": {
         "dependencies": {
           "SQLitePCLRaw.lib.e_sqlite3": "2.1.6",
@@ -787,6 +855,27 @@
       "serviceable": false,
       "sha512": ""
     },
+    "FluentValidation/10.0.4": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-LqEYHuF5gXBJzG9/aUQS50TJP5cZgh/twvPLV7iTtFFGF6isGBkNXOhr9VwmSjlFRIVOqcMtkGuHwuPbU+XpoQ==",
+      "path": "fluentvalidation/10.0.4",
+      "hashPath": "fluentvalidation.10.0.4.nupkg.sha512"
+    },
+    "FluentValidation.AspNetCore/10.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-W2eIPM1C6NK/p5IgywgwfoFiaMcX4EuIo4PGx/covWi76SJj/PX1RYtbfzqUR3Y1yfzQ0RlVQrXD7ycOEUub4Q==",
+      "path": "fluentvalidation.aspnetcore/10.0.0",
+      "hashPath": "fluentvalidation.aspnetcore.10.0.0.nupkg.sha512"
+    },
+    "FluentValidation.DependencyInjectionExtensions/10.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-J/6dnwbf+mL34SiDYl9udH3z6gduYuhENW6a2EY9LYJKqk7JDysaKpWAzDz3wULpm3zBM98PxWmk5stoqc7p2A==",
+      "path": "fluentvalidation.dependencyinjectionextensions/10.0.0",
+      "hashPath": "fluentvalidation.dependencyinjectionextensions.10.0.0.nupkg.sha512"
+    },
     "Humanizer.Core/2.14.1": {
       "type": "package",
       "serviceable": true,
@@ -1038,6 +1127,27 @@
       "sha512": "sha512-KZYeKBET/2Z0gY1WlTAK7+RHTl7GSbtvTLDXEZZojUdAPqpQNDL6tHv7VUpqfX5VEOh+uRGKaZXkuD253nEOBQ==",
       "path": "mono.texttemplating/2.2.1",
       "hashPath": "mono.texttemplating.2.2.1.nupkg.sha512"
+    },
+    "NLog/6.0.7": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-16kwDY6+/TCBToyXekpcl5mxprUWuXqltdOK26w44E0rTQTiRCjXv1VVLDtSbgMCR1RirVvr+V/9T+76cwuqnw==",
+      "path": "nlog/6.0.7",
+      "hashPath": "nlog.6.0.7.nupkg.sha512"
+    },
+    "NLog.Extensions.Logging/6.1.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-yWIluPmI4ISazv+1eEoRGnPbSVkxMN11ULblCxMvNsb8hGrw4LtuBebPOSjHK9D9yK/xSCHzmN46cELbgwiVsQ==",
+      "path": "nlog.extensions.logging/6.1.0",
+      "hashPath": "nlog.extensions.logging.6.1.0.nupkg.sha512"
+    },
+    "NLog.Web.AspNetCore/6.1.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-AYBO0oObnzc5KhrLR7J5GVGSd+fXMG1blFi5jVjmzN7antr5IBlVLcMO1BMJKgQZdByeyT7HLVvfbLd9CRYiEg==",
+      "path": "nlog.web.aspnetcore/6.1.0",
+      "hashPath": "nlog.web.aspnetcore.6.1.0.nupkg.sha512"
     },
     "SQLitePCLRaw.bundle_e_sqlite3/2.1.6": {
       "type": "package",

@@ -4,11 +4,15 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using LoansApi.Services;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Program>());
 builder.Services.AddEndpointsApiExplorer(); // ✅ აუცილებელია
 builder.Services.AddSwaggerGen();           // ✅ აუცილებელია
 builder.Services.AddScoped<IAuthService, AuthService>();
