@@ -6,6 +6,10 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace LoansApi.Services;
 
+public interface IAuthService
+{
+    string GenerateToken(User user);
+}
 public class AuthService : IAuthService
 {
     private readonly IConfiguration _config;

@@ -1,14 +1,10 @@
 using System.Security.Claims;
 using LoansApi.Api.DTOs;
-using LoansApi.Domain.Database;
+using LoansApi.Api.ResponseDTOs;
 using LoansApi.Domain.Entities;
 using LoansApi.Services;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Security.Cryptography;
-using System.Text;
-using LoansApi.Api.ResponseDTOs;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace LoansApi.Api.Controllers;
 
@@ -16,123 +12,79 @@ namespace LoansApi.Api.Controllers;
 [Route("api/[controller]")]
 public class UserController : ControllerBase
 {
-    private readonly LoanDbContext _ctx;
-    private readonly IAuthService _auth;
+    private readonly IUserService _users;
 
-    public UserController(LoanDbContext ctx, IAuthService auth)
+    public UserController(IUserService users)
     {
-        _ctx = ctx;
-        _auth = auth;
+        _users = users;
     }
-    
+
     [HttpPost("register")]
     public async Task<IActionResult> Register(UserRegistrationDto dto)
     {
-        if (await _ctx.Users.AnyAsync(u => u.Username == dto.Username))
-            return BadRequest("Username already taken.");
-        
-        if (await _ctx.Users.AnyAsync(u => u.Email == dto.Email))
-            return BadRequest("Email already taken.");
-        
-        UserRole role = UserRole.User;
-        if (!string.IsNullOrWhiteSpace(dto.Role) &&
-            Enum.TryParse<UserRole>(dto.Role, true, out var parsedRole))
+        try
         {
-            role = parsedRole;
+            var result = await _users.RegisterAsync(dto);
+            return Ok(result);
         }
-
-        var user = new User
+        catch (InvalidOperationException ex)
         {
-            FirstName = dto.FirstName,
-            LastName = dto.LastName,
-            Username = dto.Username,
-            Email = dto.Email,
-            Age = dto.Age,
-            MonthlyIncome = dto.MonthlyIncome,
-            Role = role,
-            PasswordHash = HashPassword(dto.Password)
-        };
-
-        _ctx.Users.Add(user);
-        await _ctx.SaveChangesAsync();
-
-        return Ok(new UserRegistrationResponseDto
+            return BadRequest(ex.Message);
+        }
+        catch (Exception)
         {
-            Id = user.Id,
-            Username = user.Username,
-            Role = user.Role.ToString()
-        });
+            return StatusCode(500, "Internal server error.");
+        }
     }
-    
+
     [HttpPost("login")]
     public async Task<IActionResult> Login(LoginDto dto)
     {
-        var user = await _ctx.Users.FirstOrDefaultAsync(u => u.Username == dto.Username);
-        if (user == null)
-            return Unauthorized("Invalid username or password.");
-
-        if (!VerifyPassword(dto.Password, user.PasswordHash))
-            return Unauthorized("Invalid username or password.");
-        
-        var response = new UserLoginResponseDto
+        try
         {
-            Id = user.Id,
-            Username = user.Username,
-            Role = user.Role.ToString(),
-            Token = _auth.GenerateToken(user)
-        };
-        
-        return Ok(response);
+            var result = await _users.LoginAsync(dto);
+            return Ok(result);
+        }
+        catch (UnauthorizedAccessException ex)
+        {
+            return Unauthorized(ex.Message);
+        }
+        catch (Exception)
+        {
+            return StatusCode(500, "Internal server error.");
+        }
     }
 
     [HttpGet("userInfo/{id}")]
     [Authorize]
     public async Task<IActionResult> GetUserById(int id)
     {
-        // Get the logged-in user's id from JWT claims
-        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        var loggedInUserRole = Enum.Parse<UserRole>(User.FindFirstValue(ClaimTypes.Role));
+        try
+        {
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var roleClaim = User.FindFirst(ClaimTypes.Role)?.Value;
 
-        if (userIdClaim == null)
-            return Unauthorized("User not logged in.");
+            if (userIdClaim == null || roleClaim == null)
+                return Unauthorized("Invalid token.");
 
-        if (!int.TryParse(userIdClaim, out int loggedInUserId))
-            return Unauthorized("Invalid token.");
-        
-        if (loggedInUserRole != UserRole.Accountant && loggedInUserId != id)
-            return StatusCode(403, "You can only access your own data.");
+            int requesterId = int.Parse(userIdClaim);
+            var requesterRole = Enum.Parse<UserRole>(roleClaim);
 
-        var user = await _ctx.Users
-            .Where(u => u.Id == id)
-            .Select(u => new 
-            {
-                u.Id,
-                u.Username,
-                u.Email,
-                Role = u.Role.ToString(),
-                u.FirstName,
-                u.LastName,
-                u.Age,
-                u.MonthlyIncome
-            })
-            .FirstOrDefaultAsync();
+            var user = await _users.GetUserByIdAsync(id, requesterId, requesterRole);
 
-        if (user == null)
-            return NotFound("User not found.");
-
-        return Ok(user);
-    }
-
-    private string HashPassword(string password)
-    {
-        using var sha = SHA256.Create();
-        var bytes = Encoding.UTF8.GetBytes(password);
-        var hash = sha.ComputeHash(bytes);
-        return Convert.ToBase64String(hash);
-    }
-
-    private bool VerifyPassword(string password, string hash)
-    {
-        return HashPassword(password) == hash;
+            return Ok(user);
+        }
+        catch (UnauthorizedAccessException ex)
+        {
+            return StatusCode(403, ex.Message);
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
+        catch (Exception)
+        {
+            return StatusCode(500, "Internal server error.");
+        }
     }
 }

@@ -1,0 +1,1 @@
+2025-12-10 22:42:10.7391 | ERROR | LoansApi.Program | Stopped program because of exception 

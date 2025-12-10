@@ -4,18 +4,24 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using LoansApi.Services;
-using FluentValidation;
 using FluentValidation.AspNetCore;
+using NLog.Web;
 
-
+var logger = NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Logging.ClearProviders();
+builder.Host.UseNLog();
 
 // Add services
 builder.Services.AddControllers()
     .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Program>());
-builder.Services.AddEndpointsApiExplorer(); // ✅ აუცილებელია
-builder.Services.AddSwaggerGen();           // ✅ აუცილებელია
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IAccountantService, AccountantService>();
+
 
 
 builder.Services.AddDbContext<LoanDbContext>(options =>
@@ -42,8 +48,8 @@ var app = builder.Build();
 // Swagger middleware
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();           // ✅ ამ Middleware–ით იხსნება JSON
-    app.UseSwaggerUI();         // ✅ ამ Middleware–ით იხსნება UI ბრაუზერში
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
@@ -51,5 +57,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+logger.Info("Application started.");
 
 app.Run();

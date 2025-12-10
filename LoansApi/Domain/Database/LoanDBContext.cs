@@ -26,8 +26,8 @@ public class LoanDbContext : DbContext
             .IsRequired();
 
         modelBuilder.Entity<Loan>()
-            .HasOne<User>()
-            .WithMany()
+            .HasOne<User>()               
+            .WithMany(u => u.Loans)
             .HasForeignKey(l => l.UserId)
             .OnDelete(DeleteBehavior.Cascade);
         

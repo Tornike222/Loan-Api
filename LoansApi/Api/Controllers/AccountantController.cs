@@ -1,6 +1,7 @@
-using LoansApi.Domain.Database;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using LoansApi.Services;
+using System.Security.Claims;
 
 namespace LoansApi.Api.Controllers;
 
@@ -8,56 +9,54 @@ namespace LoansApi.Api.Controllers;
 [Route("api/[controller]")]
 public class AccountantController : ControllerBase
 {
-    private readonly LoanDbContext _ctx;
-    
-    public AccountantController(LoanDbContext ctx)
+    private readonly IAccountantService _service;
+
+    public AccountantController(IAccountantService service)
     {
-        _ctx = ctx;
+        _service = service;
     }
 
-    [HttpPost("blockUser/{id}")]
+    [HttpPatch("blockUser/{id}")]
     [Authorize(Roles = "Accountant")]
     public async Task<IActionResult> BlockUser(int id)
     {
-        var user = await _ctx.Users.FindAsync(id);
-        if (user == null)
-            return NotFound("User not found.");
-        
-        if (user.IsBlocked) 
-            return StatusCode(403, "User is already blocked.");
+        var accountantName = User.FindFirstValue(ClaimTypes.Name);
+        var accountantId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-        user.IsBlocked = true;
-
-        await _ctx.SaveChangesAsync();
-
-        return Ok(new
+        try
         {
-            user.Id,
-            user.Username,
-            user.IsBlocked,
-        });
+            var result = await _service.BlockUserAsync(id, accountantName, accountantId);
+            return Ok(result);
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
+        catch (InvalidOperationException ex)
+        {
+            return StatusCode(403, ex.Message);
+        }
     }
-    
-    [HttpPost("unblockUser/{id}")]
+
+    [HttpPatch("unblockUser/{id}")]
     [Authorize(Roles = "Accountant")]
     public async Task<IActionResult> UnblockUser(int id)
     {
-        var user = await _ctx.Users.FindAsync(id);
-        if (user == null)
-            return NotFound("User not found.");
+        var accountantName = User.FindFirstValue(ClaimTypes.Name);
+        var accountantId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-        if (!user.IsBlocked)
-            return StatusCode(403, "User is not blocked.");
-
-        user.IsBlocked = false;
-
-        await _ctx.SaveChangesAsync();
-
-        return Ok(new
+        try
         {
-            user.Id,
-            user.Username,
-            user.IsBlocked,
-        });
+            var result = await _service.UnblockUserAsync(id, accountantName, accountantId);
+            return Ok(result);
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
+        catch (InvalidOperationException ex)
+        {
+            return StatusCode(403, ex.Message);
+        }
     }
 }
