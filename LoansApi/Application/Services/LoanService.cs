@@ -33,6 +33,8 @@ public class LoanService : ILoanService
 
     public async Task<ServiceResponse<CreateLoanResponseDto>> CreateLoanAsync(int userId, CreateLoanDto dto)
     {
+        _logger.Debug("CreateLoanAsync called. UserId={0}", userId);
+
         var response = new ServiceResponse<CreateLoanResponseDto>();
 
         var user = await _ctx.Users.FindAsync(userId);
@@ -46,7 +48,7 @@ public class LoanService : ILoanService
 
         if (user.IsBlocked)
         {
-            _logger.Warn("Blocked user tried to create loan. UserId={0}", userId);
+            _logger.Warn("Blocked user attempted loan creation. UserId={0}", userId);
             response.Success = false;
             response.Message = "Blocked users cannot create loans.";
             return response;
@@ -79,17 +81,27 @@ public class LoanService : ILoanService
             CreatedAt = DateTime.UtcNow
         };
 
-        _ctx.Loans.Add(loan);
-        await _ctx.SaveChangesAsync();
+        try
+        {
+            _ctx.Loans.Add(loan);
+            await _ctx.SaveChangesAsync();
 
-        _logger.Info("Loan created successfully. LoanId={0}, UserId={1}, Amount={2}", loan.Id, userId, dto.Amount);
+            _logger.Info("Loan created successfully. LoanId={0}, UserId={1}", loan.Id, userId);
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, "Error while creating loan. UserId={0}", userId);
+            response.Success = false;
+            response.Message = "Internal server error.";
+            return response;
+        }
 
         response.Data = new CreateLoanResponseDto
         {
             Id = loan.Id,
             Amount = loan.Amount,
             Currency = loan.Currency.ToString(),
-            Status = loan.Status.ToString(),
+            Status = loan.Status.ToString()
         };
 
         response.Message = "Loan created successfully.";
@@ -98,6 +110,9 @@ public class LoanService : ILoanService
 
     public async Task<ServiceResponse<bool>> UpdateLoanStatusAsync(int loanId, string status, UserRole requesterRole)
     {
+        _logger.Debug("UpdateLoanStatusAsync called. LoanId={0}, RequestedStatus={1}, Role={2}", loanId, status,
+            requesterRole);
+
         var response = new ServiceResponse<bool>();
 
         var loan = await _ctx.Loans.FindAsync(loanId);
@@ -119,50 +134,76 @@ public class LoanService : ILoanService
 
         if (!Enum.TryParse<LoanStatus>(status, true, out var newStatus))
         {
-            _logger.Warn("Invalid status update. LoanId={0}, Status={1}", loanId, status);
+            _logger.Warn("Invalid loan status provided. LoanId={0}, Status={1}", loanId, status);
             response.Success = false;
             response.Message = "Invalid status.";
             return response;
         }
 
         loan.Status = newStatus;
-        await _ctx.SaveChangesAsync();
 
-        _logger.Info("Loan status updated. LoanId={0}, NewStatus={1}", loanId, status);
+        try
+        {
+            await _ctx.SaveChangesAsync();
+            _logger.Info("Loan status updated. LoanId={0}, NewStatus={1}", loanId, status);
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, "Error updating loan status. LoanId={0}", loanId);
+            response.Success = false;
+            response.Message = "Internal server error.";
+            return response;
+        }
 
         response.Data = true;
-        response.Message = $"Loan with LoanID {loanId} is updated to status {status}.";
+        response.Message = $"Loan status updated to {status}.";
         return response;
     }
 
     public async Task<ServiceResponse<List<LoanDto>>> GetUserLoansAsync(int userId)
     {
+        _logger.Debug("GetUserLoansAsync called. UserId={0}", userId);
+
         var response = new ServiceResponse<List<LoanDto>>();
 
-        var loans = await _ctx.Loans
-            .Where(l => l.UserId == userId)
-            .Select(l => new LoanDto
-            {
-                Id = l.Id,
-                Type = l.Type.ToString(),
-                Amount = l.Amount,
-                Currency = l.Currency.ToString(),
-                PeriodMonths = l.PeriodMonths,
-                Status = l.Status.ToString()
-            })
-            .ToListAsync();
+        try
+        {
+            var loans = await _ctx.Loans
+                .Where(l => l.UserId == userId)
+                .Select(l => new LoanDto
+                {
+                    Id = l.Id,
+                    Type = l.Type.ToString(),
+                    Amount = l.Amount,
+                    Currency = l.Currency.ToString(),
+                    PeriodMonths = l.PeriodMonths,
+                    Status = l.Status.ToString()
+                })
+                .ToListAsync();
 
-        response.Data = loans;
+            _logger.Info("Fetched {0} loans for UserId={1}", loans.Count, userId);
+            response.Data = loans;
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, "Error fetching loans for UserId={0}", userId);
+            response.Success = false;
+            response.Message = "Internal server error.";
+        }
+
         return response;
     }
 
     public async Task<ServiceResponse<bool>> UpdateUserLoanAsync(int userId, UpdateLoanDto dto)
     {
+        _logger.Debug("UpdateUserLoanAsync called. UserId={0}, LoanId={1}", userId, dto.LoanId);
+
         var response = new ServiceResponse<bool>();
 
         var loan = await _ctx.Loans.FirstOrDefaultAsync(l => l.Id == dto.LoanId && l.UserId == userId);
         if (loan == null)
         {
+            _logger.Warn("UpdateUserLoan failed: Loan not found. LoanId={0}, UserId={1}", dto.LoanId, userId);
             response.Success = false;
             response.Message = "Loan not found.";
             return response;
@@ -170,13 +211,15 @@ public class LoanService : ILoanService
 
         if (loan.Status != LoanStatus.Processing)
         {
+            _logger.Warn("User tried to update non-processing loan. LoanId={0}, UserId={1}", dto.LoanId, userId);
             response.Success = false;
-            response.Message = "Only loans in 'Processing' status can be updated.";
+            response.Message = "Only Processing loans can be updated.";
             return response;
         }
 
         if (!Enum.TryParse<LoanType>(dto.Type, true, out var type))
         {
+            _logger.Warn("Invalid loan type. LoanId={0}, Type={1}", dto.LoanId, dto.Type);
             response.Success = false;
             response.Message = "Invalid loan type.";
             return response;
@@ -184,6 +227,7 @@ public class LoanService : ILoanService
 
         if (!Enum.TryParse<Currency>(dto.Currency, true, out var currency))
         {
+            _logger.Warn("Invalid currency. LoanId={0}, Currency={1}", dto.LoanId, dto.Currency);
             response.Success = false;
             response.Message = "Invalid currency.";
             return response;
@@ -194,7 +238,18 @@ public class LoanService : ILoanService
         loan.Currency = currency;
         loan.PeriodMonths = dto.PeriodMonths;
 
-        await _ctx.SaveChangesAsync();
+        try
+        {
+            await _ctx.SaveChangesAsync();
+            _logger.Info("Loan updated by user. LoanId={0}, UserId={1}", dto.LoanId, userId);
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, "Error updating user loan. LoanId={0}", dto.LoanId);
+            response.Success = false;
+            response.Message = "Internal server error.";
+            return response;
+        }
 
         response.Data = true;
         response.Message = "Loan updated successfully.";
@@ -203,11 +258,14 @@ public class LoanService : ILoanService
 
     public async Task<ServiceResponse<bool>> DeleteUserLoanAsync(int userId, int loanId)
     {
+        _logger.Debug("DeleteUserLoanAsync called. UserId={0}, LoanId={1}", userId, loanId);
+
         var response = new ServiceResponse<bool>();
 
         var loan = await _ctx.Loans.FirstOrDefaultAsync(l => l.Id == loanId && l.UserId == userId);
         if (loan == null)
         {
+            _logger.Warn("DeleteUserLoan failed: Loan not found. UserId={0}, LoanId={1}", userId, loanId);
             response.Success = false;
             response.Message = "Loan not found.";
             return response;
@@ -215,121 +273,180 @@ public class LoanService : ILoanService
 
         if (loan.Status != LoanStatus.Processing)
         {
+            _logger.Warn("User attempted to delete non-processing loan. LoanId={0}, UserId={1}", loanId, userId);
             response.Success = false;
-            response.Message = "Only loans in 'Processing' status can be deleted.";
+            response.Message = "Only Processing loans can be deleted.";
             return response;
         }
 
-        _ctx.Loans.Remove(loan);
-        await _ctx.SaveChangesAsync();
+        try
+        {
+            _ctx.Loans.Remove(loan);
+            await _ctx.SaveChangesAsync();
+
+            _logger.Info("Loan deleted by user. UserId={0}, LoanId={1}", userId, loanId);
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, "Error deleting user loan. LoanId={0}", loanId);
+            response.Success = false;
+            response.Message = "Internal server error.";
+            return response;
+        }
 
         response.Data = true;
         response.Message = "Loan deleted successfully.";
         return response;
     }
-    
+
     // Accountant methods
+
     public async Task<ServiceResponse<List<LoanDto>>> GetAnyUserLoansAsync(UserRole requesterRole, int userId)
     {
+        _logger.Debug("GetAnyUserLoansAsync called. RequestedUserId={0}, Role={1}", userId, requesterRole);
+
         var response = new ServiceResponse<List<LoanDto>>();
 
         if (requesterRole != UserRole.Accountant)
         {
+            _logger.Warn("Unauthorized attempt to fetch any user loans. Role={0}", requesterRole);
             response.Success = false;
             response.Message = "Only accountants can access this endpoint.";
             return response;
         }
 
-        var loans = await _ctx.Loans
-            .Where(l => l.UserId == userId)
-            .Select(l => new LoanDto
-            {
-                Id = l.Id,
-                Type = l.Type.ToString(),
-                Amount = l.Amount,
-                Currency = l.Currency.ToString(),
-                PeriodMonths = l.PeriodMonths,
-                Status = l.Status.ToString(),
-                UserId = l.UserId,
-                CreatedAt = l.CreatedAt
-            })
-            .ToListAsync();
+        try
+        {
+            var loans = await _ctx.Loans
+                .Where(l => l.UserId == userId)
+                .Select(l => new LoanDto
+                {
+                    Id = l.Id,
+                    Type = l.Type.ToString(),
+                    Amount = l.Amount,
+                    Currency = l.Currency.ToString(),
+                    PeriodMonths = l.PeriodMonths,
+                    Status = l.Status.ToString(),
+                    UserId = l.UserId,
+                    CreatedAt = l.CreatedAt
+                })
+                .ToListAsync();
 
-        response.Data = loans;
+            _logger.Info("Accountant fetched {0} loans for UserId={1}", loans.Count, userId);
+
+            response.Data = loans;
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, "Error fetching any-user loans. UserId={0}", userId);
+            response.Success = false;
+            response.Message = "Internal server error.";
+        }
+
         return response;
     }
 
-
-public async Task<ServiceResponse<bool>> UpdateAnyUserLoanAsync(UserRole requesterRole, UpdateLoanDto dto)
-{
-    var response = new ServiceResponse<bool>();
-
-    if (requesterRole != UserRole.Accountant)
+    public async Task<ServiceResponse<bool>> UpdateAnyUserLoanAsync(UserRole requesterRole, UpdateLoanDto dto)
     {
-        response.Success = false;
-        response.Message = "Only accountants can update loans.";
+        _logger.Debug("UpdateAnyUserLoanAsync called. LoanId={0}, Role={1}", dto.LoanId, requesterRole);
+
+        var response = new ServiceResponse<bool>();
+
+        if (requesterRole != UserRole.Accountant)
+        {
+            _logger.Warn("Unauthorized loan update attempt by non-accountant. Role={0}", requesterRole);
+            response.Success = false;
+            response.Message = "Only accountants can update loans.";
+            return response;
+        }
+
+        var loan = await _ctx.Loans.FindAsync(dto.LoanId);
+        if (loan == null)
+        {
+            _logger.Warn("UpdateAnyUserLoan failed: Loan not found. LoanId={0}", dto.LoanId);
+            response.Success = false;
+            response.Message = "Loan not found.";
+            return response;
+        }
+
+        if (!Enum.TryParse<LoanType>(dto.Type, true, out var type))
+        {
+            _logger.Warn("Invalid loan type in accountant update. LoanId={0}, Type={1}", dto.LoanId, dto.Type);
+            response.Success = false;
+            response.Message = "Invalid loan type.";
+            return response;
+        }
+
+        if (!Enum.TryParse<Currency>(dto.Currency, true, out var currency))
+        {
+            _logger.Warn("Invalid currency in accountant update. LoanId={0}, Currency={1}", dto.LoanId, dto.Currency);
+            response.Success = false;
+            response.Message = "Invalid currency.";
+            return response;
+        }
+
+        loan.Type = type;
+        loan.Amount = dto.Amount;
+        loan.Currency = currency;
+        loan.PeriodMonths = dto.PeriodMonths;
+
+        try
+        {
+            await _ctx.SaveChangesAsync();
+            _logger.Info("Loan updated by accountant. LoanId={0}", dto.LoanId);
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, "Error updating loan as accountant. LoanId={0}", dto.LoanId);
+            response.Success = false;
+            response.Message = "Internal server error.";
+            return response;
+        }
+
+        response.Data = true;
+        response.Message = "Loan updated successfully.";
         return response;
     }
 
-    var loan = await _ctx.Loans.FindAsync(dto.LoanId);
-    if (loan == null)
+    public async Task<ServiceResponse<bool>> DeleteAnyUserLoanAsync(UserRole requesterRole, int loanId)
     {
-        response.Success = false;
-        response.Message = "Loan not found.";
+        _logger.Debug("DeleteAnyUserLoanAsync called. LoanId={0}, Role={1}", loanId, requesterRole);
+
+        var response = new ServiceResponse<bool>();
+
+        if (requesterRole != UserRole.Accountant)
+        {
+            _logger.Warn("Unauthorized loan delete attempt by non-accountant. Role={0}", requesterRole);
+            response.Success = false;
+            response.Message = "Only accountants can delete loans.";
+            return response;
+        }
+
+        var loan = await _ctx.Loans.FindAsync(loanId);
+        if (loan == null)
+        {
+            _logger.Warn("DeleteAnyUserLoan failed: Loan not found. LoanId={0}", loanId);
+            response.Success = false;
+            response.Message = "Loan not found.";
+            return response;
+        }
+
+        try
+        {
+            _ctx.Loans.Remove(loan);
+            await _ctx.SaveChangesAsync();
+            _logger.Info("Loan deleted by accountant. LoanId={0}", loanId);
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, "Error deleting loan by accountant. LoanId={0}", loanId);
+            response.Success = false;
+            response.Message = "Internal server error.";
+            return response;
+        }
+
+        response.Data = true;
+        response.Message = "Loan deleted successfully.";
         return response;
     }
-
-    if (!Enum.TryParse<LoanType>(dto.Type, true, out var type))
-    {
-        response.Success = false;
-        response.Message = "Invalid loan type.";
-        return response;
-    }
-
-    if (!Enum.TryParse<Currency>(dto.Currency, true, out var currency))
-    {
-        response.Success = false;
-        response.Message = "Invalid currency.";
-        return response;
-    }
-
-    loan.Type = type;
-    loan.Amount = dto.Amount;
-    loan.Currency = currency;
-    loan.PeriodMonths = dto.PeriodMonths;
-
-    await _ctx.SaveChangesAsync();
-
-    response.Data = true;
-    response.Message = "Loan updated successfully.";
-    return response;
-}
-
-public async Task<ServiceResponse<bool>> DeleteAnyUserLoanAsync(UserRole requesterRole, int loanId)
-{
-    var response = new ServiceResponse<bool>();
-
-    if (requesterRole != UserRole.Accountant)
-    {
-        response.Success = false;
-        response.Message = "Only accountants can delete loans.";
-        return response;
-    }
-
-    var loan = await _ctx.Loans.FindAsync(loanId);
-    if (loan == null)
-    {
-        response.Success = false;
-        response.Message = "Loan not found.";
-        return response;
-    }
-
-    _ctx.Loans.Remove(loan);
-    await _ctx.SaveChangesAsync();
-
-    response.Data = true;
-    response.Message = "Loan deleted successfully.";
-    return response;
-}
-
 }
