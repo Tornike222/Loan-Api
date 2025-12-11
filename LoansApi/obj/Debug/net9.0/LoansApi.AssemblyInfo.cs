@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("LoansApi")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+710bd0c756186af2a0914d9b18b3370ce930f58e")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3ed6589465abb6d8787c79c079981c4dfcc7a6d0")]
 [assembly: System.Reflection.AssemblyProductAttribute("LoansApi")]
 [assembly: System.Reflection.AssemblyTitleAttribute("LoansApi")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

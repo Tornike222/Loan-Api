@@ -6,6 +6,7 @@ using LoansApi.Domain.Entities;
 
 namespace LoansApi.Api.Controllers;
 
+[Authorize] 
 [ApiController]
 [Route("api/[controller]")]
 public class AccountantController : ControllerBase
